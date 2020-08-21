@@ -37,10 +37,14 @@ def has_token_expired():
     res = run_cell('!az account get-access-token --query "expiresOn" --output tsv')
     if res is None:
         return None
-    # Subtract a day below for buffer and time zone issues
-    exp = datetime.datetime.fromisoformat(res[:19]) - datetime.timedelta(days=1)
-    now = datetime.datetime.now()
-    return exp < now
+    try:
+        # Subtract a few minutes for buffer
+        exp = datetime.datetime.fromisoformat(res[:19]) - datetime.timedelta(minutes=5)
+        now = datetime.datetime.now()
+        return exp < now
+    except:
+        # Something went wrong; do a login
+        return True
 
 def ensure_logged_in():
     exp = has_token_expired()
@@ -120,7 +124,7 @@ class KustoMagic(Magics, Configurable):
         The result is returned as a Pandas DataFrame and assigned to a 
         Python variable (by default named kqlresult, unless overridden by --set).
         """
-        # Parse variables (words wrapped in {}) for %%sql magic (for %sql this is done automatically)
+        # Parse variables (words wrapped in {}) for %%kql magic
         cell_variables = [
             fn for _, fn, _, _ in Formatter().parse(cell) if fn is not None
         ]
