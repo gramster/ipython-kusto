@@ -8,7 +8,7 @@ README = open(os.path.join(here, "README.md"), encoding="utf-8").read()
 NEWS = open(os.path.join(here, "NEWS.md"), encoding="utf-8").read()
 
 
-version = "0.0.2"
+version = "0.0.4"
 
 install_requires = [
     "prettytable<1",
@@ -34,7 +34,7 @@ setup(
     keywords="database ipython kusto",
     author="Graham Wheeler",
     author_email="graham@grahamwheeler.com",
-    url="https://pypi.python.org/pypi/ipython-kusto",
+    url="https://github.com/gramster/ipython-kusto",
     license="MIT",
     packages=find_packages("src"),
     package_dir={"": "src"},
