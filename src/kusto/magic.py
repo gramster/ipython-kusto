@@ -119,6 +119,7 @@ class KustoMagic(Magics, Configurable):
     @argument("-d", "--database", type=str, help="specify database")
     @argument("-f", "--file", type=str, help="Run KQL from file at this path")
     @argument("-s", "--set", type=str, help="name of Python variable to assign result to")
+    @argument("-n", "--noexpand", action="store_true", help="Don't do variable expansion of {id}s")
     @argument("-q", "--quiet", action="store_true", help="Don't display dataframe")
     @argument("-e", "--error", action="store_true", help="Display raw Kusto error")
     def execute(self, line="", cell="", local_ns={}):
@@ -137,6 +138,7 @@ class KustoMagic(Magics, Configurable):
                 cell_params[variable] = local_ns[variable]
             else:
                 raise NameError(variable)
+        cell_orig = cell
         cell = cell.format(**cell_params)
 
         # Strip any comments from the line
@@ -144,6 +146,8 @@ class KustoMagic(Magics, Configurable):
 
         # Get the arguments
         args = parse_argstring(self.execute, line)
+        if args.noexpand:
+            cell = cell_orig
 
         # save globals and locals so they can be referenced in bind vars
         user_ns = self.shell.user_ns.copy()

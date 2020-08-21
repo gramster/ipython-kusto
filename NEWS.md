@@ -1,3 +1,8 @@
+0.0.5
+
+Added a flag to inhibit variable substitution in case that is problematic 
+in some query.
+
 0.0.4
 
 Better error reporting. Use --error to get the old raw error.
