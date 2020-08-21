@@ -105,7 +105,7 @@ class KustoMagic(Magics, Configurable):
         what is in the extension configuration, but can in turn be overriden
         per query by the %kql magic.
         """
-        args = parse_argstring(self.configure, line)  
+        args = parse_argstring(self.configure, line) 
         self.cluster = args.cluster
         self.database = args.database
 
@@ -118,6 +118,7 @@ class KustoMagic(Magics, Configurable):
     @argument("-d", "--database", type=str, help="specify database")
     @argument("-f", "--file", type=str, help="Run KQL from file at this path")
     @argument("-s", "--set", type=str, help="name of Python variable to assign result to")
+    @argument("-q", "--quiet", action="store_true", help="Don't display dataframe")
     def execute(self, line="", cell="", local_ns={}):
         """Runs KQL statement against a database in a cluster.
         If necessary, an attempt will be made to log in to Azure first.
@@ -173,7 +174,8 @@ class KustoMagic(Magics, Configurable):
             v = args.set or 'kqlresult'
             df = run_query(c, d, parsed)
             self.shell.user_ns.update({v: df})
-            return df
+            if not args.quiet:
+                return df
         except Exception as e:
             raise
 

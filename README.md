@@ -6,7 +6,7 @@ https://github.com/catherinedevlin/ipython-sql
 It provides two magics:
 
 - %kqlset - a line magic to set the default cluster and database
-- %kql/%%kql - a line or cell magic to execute Kusto Query Language queries and return the results as a Pandas dataframe
+- %kql/%%kql - a line or cell magic to execute Kusto Query Language queries and return the results as a Pandas dataframe. The dataframe will be assigned to a variable 'kqlresult' (can be overridden with --set argument)
 
 If you run either of these followed by a '?' you will get additional help.
 
