@@ -2,8 +2,9 @@ import datetime
 import json
 import re
 from string import Formatter
+from IPython.core.display import display
 
-from azure.kusto.data.exceptions import KustoServiceError
+from azure.kusto.data.exceptions import KustoError, KustoServiceError
 from azure.kusto.data.helpers import dataframe_from_result_table
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 
@@ -15,7 +16,7 @@ from IPython.core.magic import (
     needs_local_scope,
 )
 from IPython.core.magic_arguments import argument, magic_arguments, parse_argstring
-from IPython.display import display_javascript
+from IPython.display import display_javascript, HTML
 try:
     from traitlets.config.configurable import Configurable
     from traitlets import Bool, Int, Unicode
@@ -119,6 +120,7 @@ class KustoMagic(Magics, Configurable):
     @argument("-f", "--file", type=str, help="Run KQL from file at this path")
     @argument("-s", "--set", type=str, help="name of Python variable to assign result to")
     @argument("-q", "--quiet", action="store_true", help="Don't display dataframe")
+    @argument("-e", "--error", action="store_true", help="Display raw Kusto error")
     def execute(self, line="", cell="", local_ns={}):
         """Runs KQL statement against a database in a cluster.
         If necessary, an attempt will be made to log in to Azure first.
@@ -154,7 +156,7 @@ class KustoMagic(Magics, Configurable):
                 command_text = infile.read() + "\n" + command_text
 
         #parsed = sql.parse.parse(command_text, self)
-        parsed = command_text
+        parsed = command_text.strip()
 
         if not parsed:
             return
@@ -176,6 +178,33 @@ class KustoMagic(Magics, Configurable):
             self.shell.user_ns.update({v: df})
             if not args.quiet:
                 return df
+        except KustoError as e:
+            if args.error:
+                raise e
+            try:
+                # This is all kinda kludgy          
+                msg = e.args[0][0]['error']['@message']
+                x = msg.find('line:position=')
+                if x >= 0:
+                    try:
+                        x += 14
+                        l, p = msg[x:x + msg[x:].find(']')].split(':')
+                        l = int(l) - 1
+                        p = int(p) - 1
+                        lines = parsed.split('\n')
+                        result = "<div style=\"fontfamily='monospace'\">"
+                        for i, line in enumerate(lines):
+                            result += line
+                            result += "<br>"
+                            if i == l:
+                                result += "<div style=\"color: red\" >" + ('&nbsp;' * p) + '^ ' + msg + '</div><br>'
+                        result += '</div>'
+                        return HTML(result)
+                    except Exception:
+                        pass
+                return msg
+            except Exception:
+                raise e
         except Exception as e:
             raise
 

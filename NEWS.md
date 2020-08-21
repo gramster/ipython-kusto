@@ -1,6 +1,6 @@
 0.0.4
 
-(WIP)
+Better error reporting. Use --error to get the old raw error.
 
 0.0.3
 
