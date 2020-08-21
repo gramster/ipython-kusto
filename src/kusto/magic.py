@@ -37,8 +37,8 @@ def has_token_expired():
     res = run_cell('!az account get-access-token --query "expiresOn" --output tsv')
     if res is None:
         return None
-    exp = datetime.datetime.fromisoformat(res[:19])
-    # Maybe add a day below in case of time zone issues?
+    # Subtract a day below for buffer and time zone issues
+    exp = datetime.datetime.fromisoformat(res[:19]) - datetime.timedelta(days=1)
     now = datetime.datetime.now()
     return exp < now
 
@@ -92,9 +92,8 @@ class KustoMagic(Magics, Configurable):
         self.shell.configurables.append(self)
 
     @needs_local_scope
-    @line_magic("kconf")
+    @line_magic("kqlset")
     @magic_arguments()
-    @argument("line", default="", nargs="*", type=str, help="kconf")
     @argument("-c", "--cluster", type=str, help="specify default cluster")
     @argument("-d", "--database", type=str, help="specify default database")
     def configure(self, line="", local_ns={}):
@@ -110,7 +109,7 @@ class KustoMagic(Magics, Configurable):
     @line_magic("kql")
     @cell_magic("kql")
     @magic_arguments()
-    @argument("line", default="", nargs="*", type=str, help="kql")
+    @argument("line", default="", nargs="*", type=str, help="kql query")
     @argument("-c", "--cluster", type=str, help="specify cluster")
     @argument("-d", "--database", type=str, help="specify database")
     @argument("-f", "--file", type=str, help="Run KQL from file at this path")
