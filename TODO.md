@@ -1,0 +1,2 @@
+- add the ability to have comments in the query cell body and strip those out before execution
+- add tests (right now the sample notebook is effectively the test suite)
