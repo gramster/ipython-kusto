@@ -4,8 +4,8 @@ from io import open
 from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, "README.rst"), encoding="utf-8").read()
-NEWS = open(os.path.join(here, "NEWS.rst"), encoding="utf-8").read()
+README = open(os.path.join(here, "README.md"), encoding="utf-8").read()
+NEWS = open(os.path.join(here, "NEWS.md"), encoding="utf-8").read()
 
 
 version = "0.0.1"
