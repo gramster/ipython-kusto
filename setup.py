@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, "README.md"), encoding="utf-8").read()
 
 
-version = "0.0.6"
+version = "0.0.7"
 
 install_requires = [
     "prettytable<1",
