@@ -12,7 +12,9 @@ If you run either of these followed by a '?' you will get additional help.
 
 When running a query, you may be redirected to a browser page to sign in if a token is needed.
 
-See the example notebook in the examples/ directory for more details.
+See the example notebook in the examples/ directory for more details, or view it here with Binder:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gramster/ipython-kusto/master?filepath=examples%2FStorms.ipynb)
 
 0.0.6
 
