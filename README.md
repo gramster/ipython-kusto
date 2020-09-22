@@ -13,3 +13,29 @@ If you run either of these followed by a '?' you will get additional help.
 When running a query, you may be redirected to a browser page to sign in if a token is needed.
 
 See the example notebook in the examples/ directory for more details.
+
+0.0.6
+
+Removed the NEWS.md file; it wasn't being bundled and caused install to not work. This is
+a quick fix.
+
+0.0.5
+
+Added a flag to inhibit variable substitution in case that is problematic 
+in some query.
+
+0.0.4
+
+Better error reporting. Use --error to get the old raw error.
+
+0.0.3
+
+Updated URL to point to Github repo.
+
+0.0.2
+
+A typo crept in to 0.0.1 release; that has been fixed.
+Added a --quiet option to not display the dataframe.
+
+0.01.
+Initial release

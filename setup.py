@@ -5,10 +5,9 @@ from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, "README.md"), encoding="utf-8").read()
-NEWS = open(os.path.join(here, "NEWS.md"), encoding="utf-8").read()
 
 
-version = "0.0.5"
+version = "0.0.6"
 
 install_requires = [
     "prettytable<1",
@@ -21,7 +20,7 @@ setup(
     name="ipython-kusto",
     version=version,
     description="Microsoft Kusto access via IPython",
-    long_description=README + "\n\n" + NEWS,
+    long_description=README + "\n",
     long_description_content_type="text/x-rst",
     classifiers=[
         "Development Status :: 3 - Alpha",
