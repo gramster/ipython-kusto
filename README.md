@@ -16,6 +16,10 @@ See the example notebook in the examples/ directory for more details, or view it
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gramster/ipython-kusto/master?filepath=examples%2FStorms.ipynb)
 
+0.0.8
+
+Fix issue with parsing queries containing {}
+
 0.0.7
 
 Fix sample notebook issue.

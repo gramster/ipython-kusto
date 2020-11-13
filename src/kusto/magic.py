@@ -133,21 +133,23 @@ class KustoMagic(Magics, Configurable):
             fn for _, fn, _, _ in Formatter().parse(cell) if fn is not None
         ]
         cell_params = {}
+        missing = None
         for variable in cell_variables:
             if variable in local_ns:
                 cell_params[variable] = local_ns[variable]
             else:
-                raise NameError(variable)
-        cell_orig = cell
-        cell = cell.format(**cell_params)
+                missing = variable
 
         # Strip any comments from the line
         #line = sql.parse.without_sql_comment(parser=self.execute.parser, line=line)
 
         # Get the arguments
         args = parse_argstring(self.execute, line)
-        if args.noexpand:
-            cell = cell_orig
+        
+        if not args.noexpand:
+            if missing:
+                raise NameError(missing)
+            cell = cell.format(**cell_params)
 
         # save globals and locals so they can be referenced in bind vars
         user_ns = self.shell.user_ns.copy()
